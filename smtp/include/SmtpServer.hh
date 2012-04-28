@@ -15,7 +15,7 @@ namespace smtp
   {
     public:
       using net::ATcpServer::Port;
-      SmtpServer(Port port, int maxConnections);
+      SmtpServer(Port port = 10025, int maxConnections = 42);
       virtual ~SmtpServer(void);
 
     protected:
