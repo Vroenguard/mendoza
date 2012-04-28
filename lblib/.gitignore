@@ -1,0 +1,6 @@
+/test/
+/uml/
+*~
+*.[oa]
+/libldmy*.a
+*.swp
