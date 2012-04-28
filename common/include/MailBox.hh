@@ -19,6 +19,7 @@ namespace mail
     private:
       std::string	_name; ///< Mail box' name.
       size_t		_size; ///< Total size the mails in bytes.
+      size_t		_maxId;
       bool		_exists;
 
       typedef std::vector<MailDescriptor> MailList;
@@ -30,5 +31,12 @@ namespace mail
       ~MailBox(void);
 
       MailBox const& operator = (MailBox const&);
+      void pushMail(std::string const& content);
+      void update(void);
+
+    private:
+      void _writeDescriptors(void);
+      void _writeMail(MailDescriptor const& descriptor,
+	  std::string const& content);
   }; // MailBox
 } // mail
