@@ -28,4 +28,10 @@ namespace net
       this->_lineReady = false;
     }
   }
+
+  void ClientSocket::setId(int id)
+  {
+    this->close();
+    this->_id = id;
+  }
 } // net

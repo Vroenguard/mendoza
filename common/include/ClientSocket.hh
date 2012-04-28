@@ -27,6 +27,7 @@ namespace net
       ~ClientSocket(void);
 
       void close(void);
+      void setId(int id);
 
     private:
       ClientSocket(ClientSocket const&);
