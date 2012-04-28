@@ -38,4 +38,17 @@ namespace mail
     _mails(mailBox._mails)
   {
   }
+
+  MailBox::~MailBox(void)
+  {
+  }
+
+  MailBox const& MailBox::operator = (MailBox const& mailBox)
+  {
+    this->_name = mailBox._name;
+    this->_size = mailBox._size;
+    this->_exists = mailBox._exists;
+    this->_mails = mailBox._mails;
+    return *this;
+  }
 } // mail

@@ -27,5 +27,8 @@ namespace mail
     public:
       MailBox(std::string const& name);
       MailBox(MailBox const& mailBox);
+      ~MailBox(void);
+
+      MailBox const& operator = (MailBox const&);
   }; // MailBox
 } // mail
