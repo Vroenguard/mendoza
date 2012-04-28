@@ -93,7 +93,7 @@ namespace mail
     this->_writeMail(descriptor, content);
   }
 
-  bool MailBox::getMailContent(size_t id, std::string& content)
+  bool MailBox::getMailContent(size_t id, std::string& content) const
   {
     std::ostringstream stream;
     stream << this->_name << '.' << id << ".mail";
