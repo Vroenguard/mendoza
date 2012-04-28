@@ -32,7 +32,7 @@ namespace net
       ATcpServer(Port, int maxConnections);
       virtual ~ATcpServer(void);
 
-      void run(void);
+      int run(void);
 
     protected:
       virtual IWorker* _createWorker(void) = 0;

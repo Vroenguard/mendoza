@@ -4,7 +4,10 @@
 // Creation:	Sat Apr 28 21:02:04 2012
 //==============================================================================
 
+#include "SmtpServer.hh"
+
 int main(void)
 {
-  return 0;
+  smtp::SmtpServer server;
+  return server.run();
 }

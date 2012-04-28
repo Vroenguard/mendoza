@@ -13,7 +13,7 @@ TARGET		=	libmendoza_common.a
 CXXFLAGS	+=	-Wall -Wextra -ansi -pedantic -Iinclude/	\
 			-I../lblib/include/
 ifeq ($(DEBUG),true)
-  CXXFLAGS	+=	-g3
+  CXXFLAGS	+=	-g3 -DDEBUG
 endif
 
 CXX		=	g++

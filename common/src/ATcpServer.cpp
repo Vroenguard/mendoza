@@ -8,6 +8,10 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <iostream>
+#include <errno.h>
+#include <cstring>
+#include <cstdlib>
 
 #include "ATcpServer.hh"
 
@@ -28,6 +32,9 @@ namespace net
       else
       {
 	setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
+#ifdef DEBUG
+	std::cout << "[DEBUG] Server successfuly initialized.\n";
+#endif // DEBUG
       }
     }
   }
@@ -54,20 +61,30 @@ namespace net
     return false;
   }
 
-  void ATcpServer::run(void)
+  int ATcpServer::run(void)
   {
     int clientSocket;
     sockaddr_in sockAddr;
     socklen_t sockAddrLen;
 
-    while ((clientSocket = listen(this->_socket, this->_maxConnections)) != -1)
+    if (listen(this->_socket, this->_maxConnections) != -1)
     {
-      if (accept(clientSocket, reinterpret_cast<sockaddr*>(&sockAddr),
-	    &sockAddrLen) != -1)
+      while ((clientSocket = accept(this->_socket,
+	      reinterpret_cast<sockaddr*>(&sockAddr),
+	      &sockAddrLen)) != -1)
       {
+#ifdef DEBUG
+	std::cout << "[DEBUG] Client accepted : launching a new worker.\n";
+#endif // DEBUG
 	this->_queue.push(clientSocket);
 	this->_condVar.signal();
       }
     }
+    else
+    {
+      std::cerr << "Fatal error: " << strerror(errno) << '\n';
+      return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
   }
 } // net
