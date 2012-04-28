@@ -18,11 +18,20 @@ namespace smtp
   class SmtpWorker : public net::IWorker
   {
     private:
+      typedef void (SmtpWorker::*Action)(void);
+
       threads::SafeQueue<int>&		_queue;
       threads::ConditionVariable<>&	_condVar;
+      Action				_nextAction;
 
     public:
       SmtpWorker(threads::SafeQueue<int>& queue,
 	  threads::ConditionVariable<>& condVar);
+
+    protected:
+      virtual void run(void);
+
+      SmtpWorker(SmtpWorker const&);
+      SmtpWorker const& operator = (SmtpWorker const&);
   }; // SmtpWorker
 } // smtp

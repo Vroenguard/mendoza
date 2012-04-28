@@ -10,7 +10,19 @@ namespace smtp
 {
   SmtpWorker::SmtpWorker(threads::SafeQueue<int>& queue,
       threads::ConditionVariable<>& condVar)
-    : _queue(queue), _condVar(condVar)
+    : _queue(queue), _condVar(condVar), _nextAction(NULL)
   {
+  }
+
+  void SmtpWorker::run(void)
+  {
+    this->_condVar.wait();
+    while (42)
+    {
+      if (this->_nextAction)
+      {
+	(this->*_nextAction)();
+      }
+    }
   }
 } // smtp
