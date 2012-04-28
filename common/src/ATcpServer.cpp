@@ -32,6 +32,14 @@ namespace net
     }
   }
 
+  ATcpServer::~ATcpServer(void)
+  {
+    if (this->_socket != -1)
+    {
+      close(this->_socket);
+    }
+  }
+
   bool ATcpServer::_bind(Port port)
   {
     sockaddr_in sockAddr;
