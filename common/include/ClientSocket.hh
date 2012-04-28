@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <string>
 #include <sstream>
 
 namespace net
@@ -31,6 +34,14 @@ namespace net
       void setId(int id);
       operator bool ();
       std::string getLine(void);
+      template <typename T>
+	ClientSocket& operator << (T const& value)
+	{
+	  std::ostringstream stream;
+	  stream << value;
+	  send(this->_id, stream.str().c_str(), stream.str().length(), 0);
+	  return *this;
+	}
 
     private:
       ClientSocket(ClientSocket const&);
