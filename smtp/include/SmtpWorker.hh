@@ -10,6 +10,7 @@
 #include "LblibConditionVariable.hpp"
 
 #include "IWorker.hh"
+#include "ClientSocket.hh"
 
 namespace threads = lblib::threads;
 
@@ -23,6 +24,9 @@ namespace smtp
       threads::SafeQueue<int>&		_queue;
       threads::ConditionVariable<>&	_condVar;
       Action				_nextAction;
+      net::ClientSocket			_socket;
+      std::string			_line;
+      char const*			_eol;
 
     public:
       SmtpWorker(threads::SafeQueue<int>& queue,
@@ -33,5 +37,8 @@ namespace smtp
 
       SmtpWorker(SmtpWorker const&);
       SmtpWorker const& operator = (SmtpWorker const&);
+
+    private:
+      void _readHelo(void);
   }; // SmtpWorker
 } // smtp
