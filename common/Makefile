@@ -10,7 +10,8 @@
 
 TARGET		=	libmendoza_common.a
 
-CXXFLAGS	+=	-Wall -Wextra -ansi -pedantic -Iinclude/
+CXXFLAGS	+=	-Wall -Wextra -ansi -pedantic -Iinclude/	\
+			-I../lblib/include/
 ifeq ($(DEBUG),true)
   CXXFLAGS	+=	-g3
 endif
@@ -22,7 +23,8 @@ RANLIB		=	ranlib
 
 SOURCE_DIR	=	src
 SOURCES		=	$(SOURCE_DIR)/FileLock.cpp			\
-			$(SOURCE_DIR)/MailBox.cpp
+			$(SOURCE_DIR)/MailBox.cpp			\
+			$(SOURCE_DIR)/ATcpServer.cpp
 
 OBJECTS		=	$(SOURCES:.cpp=.o)
 
