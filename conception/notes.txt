@@ -1,0 +1,8 @@
+Stockage des mails sur le disque dur :
+
+- stockage binaire (pas portable mais plus rapide a implementer, 1 fichier
+  par boite mail)
+- systeme de fichier de lock (atomique sous linux + super facile a implementer)
+  - on cree un fichier de lock (O_CREATE | O_EXCL) pour lock la "database"
+    de mail
+  - on le supprime pour dire qu'on a fini
