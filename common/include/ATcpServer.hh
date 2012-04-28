@@ -18,7 +18,7 @@ namespace net
 {
   class ATcpServer
   {
-    private:
+    protected:
       typedef std::list<IWorker*> WorkerList;
 
       threads::SafeQueue<int>		_queue;
