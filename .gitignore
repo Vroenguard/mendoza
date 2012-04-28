@@ -2,3 +2,7 @@
 *.swp
 *~
 .~lock.*
+*.mail
+*.mailbox
+a.out
+test.cpp
