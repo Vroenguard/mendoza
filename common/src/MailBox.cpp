@@ -32,4 +32,10 @@ namespace mail
       _exists = false;
     }
   }
+
+  MailBox::MailBox(MailBox const& mailBox)
+    : _name(mailBox._name), _size(mailBox._size), _exists(mailBox._exists),
+    _mails(mailBox._mails)
+  {
+  }
 } // mail
