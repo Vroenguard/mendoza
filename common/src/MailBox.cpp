@@ -92,4 +92,22 @@ namespace mail
     this->_writeDescriptors();
     this->_writeMail(descriptor, content);
   }
+
+  bool MailBox::getMailContent(size_t id, std::string& content)
+  {
+    std::ostringstream stream;
+    stream << this->_name << '.' << id << ".mail";
+    FileLock fileLock(stream.str());
+    std::ifstream mailFile(stream.str().c_str());
+    if (mailFile)
+    {
+      mailFile.seekg(0, std::ios_base::end);
+      size_t size = mailFile.tellg();
+      mailFile.seekg(0, std::ios_base::beg);
+      content.resize(size);
+      mailFile.read(&content[0], size);
+      return true;
+    }
+    return false;
+  }
 } // mail

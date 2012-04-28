@@ -33,6 +33,7 @@ namespace mail
       MailBox const& operator = (MailBox const&);
       void pushMail(std::string const& content);
       void update(void);
+      bool getMailContent(size_t id, std::string& content);
 
     private:
       void _writeDescriptors(void);
