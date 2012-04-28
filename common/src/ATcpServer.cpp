@@ -17,14 +17,17 @@ namespace net
     : _maxConnections(maxConnections)
   {
     _socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (_socket == -1)
+    if (_socket != -1)
     {
       int option = 1;
-      setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
-      if (_bind(port))
+      if (!_bind(port))
       {
 	close(_socket);
 	_socket = -1;
+      }
+      else
+      {
+	setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
       }
     }
   }
