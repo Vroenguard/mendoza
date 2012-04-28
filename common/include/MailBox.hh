@@ -34,6 +34,7 @@ namespace mail
       void pushMail(std::string const& content);
       void update(void);
       bool getMailContent(size_t id, std::string& content) const;
+      MailDescriptor const* getMailDescriptor(size_t id) const;
 
     private:
       void _writeDescriptors(void);

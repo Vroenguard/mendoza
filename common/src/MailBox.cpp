@@ -110,4 +110,16 @@ namespace mail
     }
     return false;
   }
+
+  MailDescriptor const* MailBox::getMailDescriptor(size_t id) const
+  {
+    for (size_t i = 0; i < this->_mails.size(); ++i)
+    {
+      if (this->_mails[i].id == id)
+      {
+	return &this->_mails[i];
+      }
+    }
+    return NULL;
+  }
 } // mail
