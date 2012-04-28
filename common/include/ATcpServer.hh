@@ -6,7 +6,9 @@
 
 #pragma once
 
+#include <list>
 #include "LblibSafeQueue.hpp"
+#include "IWorker.hh"
 
 namespace threads = lblib::threads;
 
@@ -19,12 +21,18 @@ namespace net
       int			_maxConnections;
       int			_socket;
 
+      typedef std::list<IWorker*> WorkerList;
+      WorkerList		_workers;
+
     public:
       typedef unsigned short Port;
       ATcpServer(Port, size_t maxConnections);
       virtual ~ATcpServer(void);
 
       void run(void);
+
+    protected:
+      virtual IWorker* createWorker(void) = 0;
 
     private:
       ATcpServer(ATcpServer const&);
