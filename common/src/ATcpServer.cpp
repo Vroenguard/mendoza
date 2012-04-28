@@ -13,7 +13,7 @@
 
 namespace net
 {
-  ATcpServer::ATcpServer(Port port, size_t maxConnections)
+  ATcpServer::ATcpServer(Port port, int maxConnections)
     : _maxConnections(maxConnections)
   {
     _socket = socket(AF_INET, SOCK_STREAM, 0);

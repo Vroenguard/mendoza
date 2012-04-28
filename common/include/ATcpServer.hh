@@ -29,7 +29,7 @@ namespace net
 
     public:
       typedef unsigned short Port;
-      ATcpServer(Port, size_t maxConnections);
+      ATcpServer(Port, int maxConnections);
       virtual ~ATcpServer(void);
 
       void run(void);
