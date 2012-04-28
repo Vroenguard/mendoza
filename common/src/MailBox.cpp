@@ -13,7 +13,7 @@
 namespace mail
 {
   MailBox::MailBox(std::string const& name)
-    : _name(name)
+    : _name(name), _maxId(0)
   {
     std::string fileName(this->_name + ".mailbox");
     FileLock fileLock(fileName);
