@@ -21,7 +21,8 @@ AR		=	ar -cr
 RANLIB		=	ranlib
 
 SOURCE_DIR	=	src
-SOURCES		=	$(SOURCE_DIR)/FileLock.cpp
+SOURCES		=	$(SOURCE_DIR)/FileLock.cpp			\
+			$(SOURCE_DIR)/MailBox.cpp
 
 OBJECTS		=	$(SOURCES:.cpp=.o)
 
