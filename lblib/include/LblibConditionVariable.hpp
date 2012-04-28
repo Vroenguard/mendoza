@@ -3,7 +3,7 @@
 #include <pthread.h>
 
 #include "LblibScopedLock.hpp"
-#include "MLblibutex.hpp"
+#include "LblibMutex.hpp"
 
 namespace lblib
 {
