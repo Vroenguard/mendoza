@@ -35,7 +35,7 @@ namespace net
       void run(void);
 
     protected:
-      virtual IWorker* createWorker(void) = 0;
+      virtual IWorker* _createWorker(void) = 0;
 
     private:
       ATcpServer(ATcpServer const&);
