@@ -23,7 +23,8 @@ RM		=	rm -f
 
 SOURCE_DIR	=	src
 SOURCES		=	$(SOURCE_DIR)/main.cpp				\
-			$(SOURCE_DIR)/SmtpWorker.cpp
+			$(SOURCE_DIR)/SmtpWorker.cpp			\
+			$(SOURCE_DIR)/SmtpServer.cpp
 
 OBJECTS		=	$(SOURCES:.cpp=.o)
 
