@@ -13,14 +13,15 @@ namespace net
   class ClientSocket
   {
     private:
-      int		_id;
-      bool		_lineReady;
-      std::stringstream	_stream;
-
       enum
       {
 	RECV_MAX_SIZE = 512
       };
+
+      int		_id;
+      bool		_lineReady;
+      std::stringstream	_stream;
+      char		_buffer[RECV_MAX_SIZE];
 
     public:
       ClientSocket(int id = -1);
@@ -29,6 +30,7 @@ namespace net
       void close(void);
       void setId(int id);
       operator bool ();
+      std::string getLine(void);
 
     private:
       ClientSocket(ClientSocket const&);
