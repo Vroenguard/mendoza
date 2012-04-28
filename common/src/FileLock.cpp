@@ -26,6 +26,7 @@ namespace mail
     if (this->_fd != -1)
     {
       close(this->_fd);
+      unlink(this->_fileName.c_str());
     }
   }
 
