@@ -24,7 +24,8 @@ RANLIB		=	ranlib
 SOURCE_DIR	=	src
 SOURCES		=	$(SOURCE_DIR)/FileLock.cpp			\
 			$(SOURCE_DIR)/MailBox.cpp			\
-			$(SOURCE_DIR)/ATcpServer.cpp
+			$(SOURCE_DIR)/ATcpServer.cpp			\
+			$(SOURCE_DIR)/ClientSocket.cpp
 
 OBJECTS		=	$(SOURCES:.cpp=.o)
 
