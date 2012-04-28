@@ -16,7 +16,7 @@ namespace net
   {
     private:
       threads::SafeQueue<int>	_queue;
-      size_t			_maxConnections;
+      int			_maxConnections;
       int			_socket;
 
     public:
@@ -24,7 +24,12 @@ namespace net
       ATcpServer(Port, size_t maxConnections);
       virtual ~ATcpServer(void);
 
+      void run(void);
+
     private:
+      ATcpServer(ATcpServer const&);
+      ATcpServer const& operator = (ATcpServer const&);
+
       bool _bind(Port);
   }; // ATcpServer
 } // net

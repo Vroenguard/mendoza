@@ -53,4 +53,17 @@ namespace net
     }
     return false;
   }
+
+  void ATcpServer::run(void)
+  {
+    int clientSocket;
+    sockaddr_in sockAddr;
+    socklen_t sockAddrLen;
+
+    while ((clientSocket = listen(this->_socket, this->_maxConnections)) != -1)
+    {
+      accept(clientSocket, reinterpret_cast<sockaddr*>(&sockAddr),
+	  &sockAddrLen);
+    }
+  }
 } // net
