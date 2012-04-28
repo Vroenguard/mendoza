@@ -34,4 +34,13 @@ namespace net
     this->close();
     this->_id = id;
   }
+
+  ClientSocket::operator bool (void)
+  {
+    if (_id != -1)
+    {
+      return true;
+    }
+    return false;
+  }
 } // net
