@@ -122,4 +122,23 @@ namespace mail
     }
     return NULL;
   }
+
+  bool MailBox::deleteMail(size_t id)
+  {
+    MailDescriptor* descriptorPtr;
+    for (size_t i = 0; i < this->_mails.size(); ++i)
+    {
+      if (this->_mails[i].id == id)
+      {
+	descriptorPtr = &this->_mails[i];
+	break;
+      }
+    }
+    if (descriptorPtr)
+    {
+      descriptorPtr->toDelete = true;
+      return true;
+    }
+    return false;
+  }
 } // mail
