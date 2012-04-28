@@ -62,8 +62,12 @@ namespace net
 
     while ((clientSocket = listen(this->_socket, this->_maxConnections)) != -1)
     {
-      accept(clientSocket, reinterpret_cast<sockaddr*>(&sockAddr),
-	  &sockAddrLen);
+      if (accept(clientSocket, reinterpret_cast<sockaddr*>(&sockAddr),
+	    &sockAddrLen) != -1)
+      {
+	this->_queue.push(clientSocket);
+	this->_condVar.signal();
+      }
     }
   }
 } // net

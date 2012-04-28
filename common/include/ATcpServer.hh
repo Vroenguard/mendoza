@@ -7,7 +7,9 @@
 #pragma once
 
 #include <list>
+
 #include "LblibSafeQueue.hpp"
+#include "LblibConditionVariable.hpp"
 #include "IWorker.hh"
 
 namespace threads = lblib::threads;
@@ -17,12 +19,13 @@ namespace net
   class ATcpServer
   {
     private:
-      threads::SafeQueue<int>	_queue;
-      int			_maxConnections;
-      int			_socket;
-
       typedef std::list<IWorker*> WorkerList;
-      WorkerList		_workers;
+
+      threads::SafeQueue<int>		_queue;
+      int				_maxConnections;
+      int				_socket;
+      WorkerList			_workers;
+      threads::ConditionVariable<>	_condVar;
 
     public:
       typedef unsigned short Port;
