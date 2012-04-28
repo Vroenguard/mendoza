@@ -53,6 +53,11 @@ namespace mail
       file.seekg(sizeof(_maxId), std::ios_base::beg);
       _mails.resize(fileSize / sizeof(MailDescriptor));
       file.read(reinterpret_cast<char*>(&_mails[0]), fileSize);
+      this->_size = 0;
+      for (MailList::size_type i = 0; i < this->_mails.size(); ++i)
+      {
+	this->_size += this->_mails[i].size;
+      }
     }
     else
     {
@@ -137,6 +142,7 @@ namespace mail
     if (descriptorPtr)
     {
       descriptorPtr->toDelete = true;
+      this->_size -= descriptorPtr->size;
       return true;
     }
     return false;
