@@ -65,6 +65,7 @@ namespace pop3
       if (*this->_mailBox && this->_mailBox->isAuthenticated())
       {
 	this->_socket << "+OK" << this->_eol;
+	this->_nextAction = &Pop3Worker::_readCommand;
       }
       else
       {
@@ -78,6 +79,23 @@ namespace pop3
 	<< "+OK lucian-b.mendoza.epitech.eu  POP3 server signing off"
 	<< this->_eol;
       this->_socket.close();
+    }
+    else
+    {
+      this->_socket << "-ERR" << this->_eol;
+    }
+  }
+
+  void Pop3Worker::_readCommand(void)
+  {
+    std::istringstream stream(this->_line);
+    std::string command;
+    stream >> command;
+    CommandMap::iterator it = this->_commands.find(command);
+    if (it != this->_commands.end())
+    {
+      Command cmd = it->second;
+      (this->*cmd)(stream);
     }
     else
     {

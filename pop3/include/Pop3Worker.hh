@@ -7,6 +7,7 @@
 #pragma once
 
 #include <list>
+#include <map>
 
 #include "LblibSafeQueue.hpp"
 #include "LblibConditionVariable.hpp"
@@ -24,6 +25,8 @@ namespace pop3
     private:
       typedef void (Pop3Worker::*Action)(void);
       typedef std::list<std::string> RecipientList;
+      typedef void (Pop3Worker::*Command) (std::istringstream&);
+      typedef std::map<std::string, Command> CommandMap;
 
       threads::SafeQueue<int>&		_queue;
       threads::ConditionVariable<>&	_condVar;
@@ -32,6 +35,7 @@ namespace pop3
       std::string			_line;
       char const*			_eol;
       mail::MailBox*			_mailBox;
+      CommandMap			_commands;
 
     public:
       Pop3Worker(threads::SafeQueue<int>& queue,
@@ -46,5 +50,6 @@ namespace pop3
 
     private:
       void _readIds(void);
+      void _readCommand(void);
   }; // Pop3Worker
 } // pop3
