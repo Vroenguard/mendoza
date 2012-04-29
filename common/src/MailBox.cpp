@@ -164,4 +164,9 @@ namespace mail
   void MailBox::write(void)
   {
   }
+
+  bool MailBox::isAuthenticated(void)
+  {
+    return this->_authenticated;
+  }
 } // mail

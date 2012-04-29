@@ -47,6 +47,7 @@ namespace mail
       bool deleteMail(size_t id);
       void write(void);
       operator bool (void);
+      bool isAuthenticated(void);
 
     private:
       void _writeDescriptors(void);
