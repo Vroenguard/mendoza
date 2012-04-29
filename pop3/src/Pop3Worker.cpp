@@ -58,6 +58,7 @@ namespace pop3
     stream >> command;
     if (command == "APOP")
     {
+      stream >> login >> password;
       if (this->_mailBox)
 	delete this->_mailBox;
       this->_mailBox = new mail::MailBox(login, password);
