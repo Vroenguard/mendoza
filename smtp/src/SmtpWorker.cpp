@@ -48,9 +48,11 @@ namespace smtp
   {
     if (this->_line.find("HELO ") == 0)
     {
+#ifdef DEBUG
+      std::cout << "[DEBUG] Worker thread: Greetings passed\n";
+#endif // DEBUG
       this->_socket
-	<< "250 lucian_b.mendoza.epitech.eu. ESMTP Mendoza"
-	<< this->_eol;
+	<< "250 lucian_b.mendoza.epitech.eu." << this->_eol;
       this->_nextAction = &SmtpWorker::_readCommand;
     }
     else if ((this->_line.find("quit") == 0)
@@ -68,7 +70,7 @@ namespace smtp
   void SmtpWorker::_readCommand(void)
   {
     size_t pos;
-    if ((pos = this->_line.find("MAIL FROM: ")) == 0)
+    if ((pos = this->_line.find("MAIL FROM:")) == 0)
     {
       this->_nextAction = &SmtpWorker::_readMailRecipient;
       this->_socket << "250 2.1.0 Ok" << this->_eol;
@@ -88,7 +90,7 @@ namespace smtp
   void SmtpWorker::_readMailRecipient(void)
   {
     size_t pos;
-    std::string const command("RECPT TO: ");
+    std::string const command("RCPT TO:");
     if ((pos = this->_line.find(command)) == 0)
     {
       this->_recipients.push_back(this->_line.substr(command.size(),
@@ -98,10 +100,13 @@ namespace smtp
     }
     else if ((pos = this->_line.find("DATA")) == 0)
     {
+#ifdef DEBUG
+      std::cout << "[DEBUG] 354 End data with <CR><LF>.<CR><LF>" << this->_eol;
+#endif // DEBUG
       this->_nextAction = &SmtpWorker::_readMailData;
       this->_mailDataState = 0;
       this->_mailData = "";
-      this->_socket << "250 2.1.0 Ok" << this->_eol;
+      this->_socket << "354 ok\r\n";
     }
     else
     {
@@ -119,6 +124,9 @@ namespace smtp
     {
       this->_mailDataState = 0;
       this->_mailData += this->_line;
+#ifdef DEBUG
+      std::cout << "[DEBUG] Concat to message: " << this->_line << '\n';
+#endif // DEBUG
     }
   }
 
@@ -131,11 +139,17 @@ namespace smtp
     else if ((this->_line == ".\r\n") && (this->_mailDataState == 1))
     {
       this->_saveMail();
+#ifdef DEBUG
+      std::cout << "[DEBUG] 250 2.1.0 Ok" << this->_eol;
+#endif // DEBUG
       this->_socket << "250 2.1.0 Ok" << this->_eol;
       this->_nextAction = &SmtpWorker::_readCommand;
     }
     else
     {
+#ifdef DEBUG
+      std::cout << "[DEBUG] Concat to message: " << this->_line << '\n';
+#endif // DEBUG
       this->_mailData += this->_line;
     }
   }

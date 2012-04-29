@@ -10,6 +10,8 @@
 #include <sys/socket.h>
 #include <string>
 #include <sstream>
+#include <iostream>
+#include <cstring>
 
 namespace net
 {
@@ -39,6 +41,10 @@ namespace net
 	{
 	  std::ostringstream stream;
 	  stream << value;
+#ifdef DEBUG
+	  std::cout << "stream.str(): \"" << stream.str().c_str() << "\"\n";
+	  std::cout << "stream.str().size(): " << strlen(stream.str().c_str()) << '\n';
+#endif // DEBUG
 	  send(this->_id, stream.str().c_str(), stream.str().length(), 0);
 	  return *this;
 	}
