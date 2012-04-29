@@ -169,7 +169,7 @@ namespace mail
   void MailBox::write(void)
   {
     FileLock fileLock(this->_name + ".mailbox");
-    this->update();
+    this->_mails.clear();
     std::string fileName(this->_name + ".mailbox");
     std::ofstream mailBoxFile(fileName.c_str(),
 	std::ios_base::out | std::ios_base::trunc);
@@ -185,5 +185,15 @@ namespace mail
     std::copy(&password[0], &password[PASSWORD_LENGTH - 1],
 	this->_realPassword);
     this->_realPassword[PASSWORD_LENGTH] = '\0';
+  }
+
+  size_t MailBox::getMailCount(void) const
+  {
+    return this->_mails.size();
+  }
+
+  size_t MailBox::getSize(void) const
+  {
+    return this->_size;
   }
 } // mail

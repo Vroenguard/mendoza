@@ -52,6 +52,8 @@ namespace mail
       operator bool (void);
       bool isAuthenticated(void);
       void setPassword(Password const&);
+      size_t getMailCount(void) const;
+      size_t getSize(void) const;
 
     private:
       void _writeDescriptors(void);

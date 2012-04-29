@@ -116,6 +116,7 @@ namespace pop3
 
   void Pop3Worker::_statCommand(std::istringstream&)
   {
-    this->_socket << "+OK" << this->_eol;
+    this->_socket << "+OK " << this->_mailBox->getMailCount()
+     << ' ' << this->_mailBox->getSize() << this->_eol;
   }
 } // pop3
