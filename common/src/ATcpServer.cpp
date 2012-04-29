@@ -24,6 +24,7 @@ namespace net
     if (_socket != -1)
     {
       int option = 1;
+      setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
       if (!_bind(port))
       {
 	close(_socket);
@@ -31,7 +32,6 @@ namespace net
       }
       else
       {
-	setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
 #ifdef DEBUG
 	std::cout << "[DEBUG] Server successfuly initialized.\n";
 #endif // DEBUG
