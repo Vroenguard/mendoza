@@ -6,18 +6,20 @@
 
 #include <fstream>
 #include <sstream>
+#include <cstring>
 
 #include "MailBox.hh"
 #include "FileLock.hh"
 
 namespace mail
 {
-  MailBox::MailBox(std::string const& name)
-    : _name(name), _maxId(0)
+  MailBox::MailBox(std::string const& name, std::string const& password)
+    : _name(name), _maxId(0), _password(password), _authenticated(false)
   {
     std::string fileName(this->_name + ".mailbox");
     FileLock fileLock(fileName);
     update();
+    memset(this->_realPassword, 0, sizeof(this->_realPassword));
   }
 
   MailBox::MailBox(MailBox const& mailBox)
@@ -48,6 +50,11 @@ namespace mail
     {
       _exists = true;
       file.read(reinterpret_cast<char*>(&_maxId), sizeof(_maxId));
+      file.read(this->_realPassword, sizeof(this->_realPassword));
+      if (this->_password == this->_realPassword)
+      {
+	this->_authenticated = true;
+      }
       file.seekg(0, std::ios_base::end);
       size_t fileSize = file.tellg();
       file.seekg(sizeof(_maxId), std::ios_base::beg);
@@ -72,6 +79,7 @@ namespace mail
 	std::ios_base::out | std::ios_base::trunc);
     mailBoxFile.write(reinterpret_cast<char*>(&this->_maxId),
 	sizeof(this->_maxId));
+    mailBoxFile.write(this->_realPassword, sizeof(this->_realPassword));
     mailBoxFile.write(reinterpret_cast<char*>(&this->_mails[0]),
 	  sizeof(MailDescriptor) * this->_mails.size());
   }
@@ -151,5 +159,9 @@ namespace mail
   MailBox::operator bool (void)
   {
     return this->_exists;
+  }
+
+  void MailBox::write(void)
+  {
   }
 } // mail

@@ -17,6 +17,12 @@ namespace mail
   class MailBox
   {
     private:
+      enum
+      {
+	PASSWORD_LENGTH = 20,
+	PASSWORD_SIZE
+      };
+
       std::string	_name; ///< Mail box' name.
       size_t		_size; ///< Total size the mails in bytes.
       size_t		_maxId;
@@ -24,9 +30,12 @@ namespace mail
 
       typedef std::vector<MailDescriptor> MailList;
       MailList		_mails;
+      std::string	_password;
+      bool		_authenticated;
+      char		_realPassword[PASSWORD_LENGTH];
 
     public:
-      MailBox(std::string const& name);
+      MailBox(std::string const& name, std::string const& password);
       MailBox(MailBox const& mailBox);
       ~MailBox(void);
 
@@ -36,6 +45,7 @@ namespace mail
       bool getMailContent(size_t id, std::string& content) const;
       MailDescriptor const* getMailDescriptor(size_t id) const;
       bool deleteMail(size_t id);
+      void write(void);
       operator bool (void);
 
     private:
