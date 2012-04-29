@@ -36,6 +36,7 @@ namespace mail
       bool getMailContent(size_t id, std::string& content) const;
       MailDescriptor const* getMailDescriptor(size_t id) const;
       bool deleteMail(size_t id);
+      operator bool (void);
 
     private:
       void _writeDescriptors(void);

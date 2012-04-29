@@ -147,4 +147,9 @@ namespace mail
     }
     return false;
   }
+
+  MailBox::operator bool (void)
+  {
+    return this->_exists;
+  }
 } // mail
