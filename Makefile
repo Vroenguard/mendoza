@@ -9,21 +9,21 @@
 ##
 
 MAKE		=	make -C
+CP		=	cp
+RM		=	rm -f
 
 COMMON_TARGET	=	common/libmendoza_common.a
 SMTP_TARGET	=	smtp/smtp_server
 
 all		:	common smtp
 
-common		: $(COMMON_TARGET)
-
-$(COMMON_TARGET)	:
+common		:
 		$(MAKE) common/
+		$(CP) $(COMMON_TARGET) ./
 
-smtp		:	$(SMTP_TARGET)
-
-$(SMTP_TARGET)	:
+smtp		:
 		$(MAKE) smtp/
+		$(CP) $(SMTP_TARGET) ./
 
 clean		:
 		$(MAKE) common/ clean
@@ -32,9 +32,10 @@ clean		:
 fclean		:
 		$(MAKE) common/ fclean
 		$(MAKE) smtp/ fclean
+		$(RM) $(COMMON_TARGET) $(SMTP_TARGET)
 
 re		:
 		$(MAKE) common/ re
 		$(MAKE) smtp/ re
 
-.PHONY		:	common all
+.PHONY		:	common smtp all
