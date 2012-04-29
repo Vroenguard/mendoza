@@ -161,12 +161,22 @@ namespace mail
     return this->_exists;
   }
 
-  void MailBox::write(void)
-  {
-  }
-
   bool MailBox::isAuthenticated(void)
   {
     return this->_authenticated;
+  }
+
+  void MailBox::write(void)
+  {
+    FileLock fileLock(this->_name + ".mailbox");
+    this->update();
+    std::string fileName(this->_name + ".mailbox");
+    std::ofstream mailBoxFile(fileName.c_str(),
+	std::ios_base::out | std::ios_base::trunc);
+    mailBoxFile.write(reinterpret_cast<char*>(&this->_maxId),
+	sizeof(this->_maxId));
+    mailBoxFile.write(this->_realPassword, sizeof(this->_realPassword));
+    mailBoxFile.write(reinterpret_cast<char*>(&this->_mails[0]),
+	  sizeof(MailDescriptor) * this->_mails.size());
   }
 } // mail
