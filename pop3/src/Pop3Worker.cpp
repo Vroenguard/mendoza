@@ -15,6 +15,8 @@ namespace pop3
     : _queue(queue), _condVar(condVar), _nextAction(NULL), _eol("\015\012"),
     _mailBox(NULL)
   {
+    this->_commands["STAT"] = &Pop3Worker::_statCommand;
+    this->_commands["QUIT"] = &Pop3Worker::_quitCommand;
   }
 
   Pop3Worker::~Pop3Worker(void)
@@ -101,5 +103,19 @@ namespace pop3
     {
       this->_socket << "-ERR" << this->_eol;
     }
+  }
+
+  void Pop3Worker::_quitCommand(std::istringstream&)
+  {
+    this->_nextAction = NULL;
+    this->_socket
+      << "+OK lucian-b.mendoza.epitech.eu  POP3 server signing off"
+      << this->_eol;
+    this->_socket.close();
+  }
+
+  void Pop3Worker::_statCommand(std::istringstream&)
+  {
+    this->_socket << "+OK" << this->_eol;
   }
 } // pop3

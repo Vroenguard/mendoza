@@ -51,5 +51,7 @@ namespace pop3
     private:
       void _readIds(void);
       void _readCommand(void);
+      void _statCommand(std::istringstream&);
+      void _quitCommand(std::istringstream&);
   }; // Pop3Worker
 } // pop3
