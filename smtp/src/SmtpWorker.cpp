@@ -160,7 +160,14 @@ namespace smtp
     for (it = this->_recipients.begin(); it != this->_recipients.end(); ++it)
     {
       mail::MailBox mailBox(it->substr(0, it->find_first_of('@')));
-      mailBox.pushMail(this->_mailData);
+      if (mailBox)
+      {
+	mailBox.pushMail(this->_mailData);
+      }
+      else
+      {
+	this->_socket << "550 unknown mail box " << *it << this->_eol;
+      }
     }
   }
 } // smtp
