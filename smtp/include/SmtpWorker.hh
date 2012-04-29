@@ -51,5 +51,7 @@ namespace smtp
       void _readMailData(void);
       void _mailDataEndStage1(void);
       void _saveMail(void);
+      void _epureRecipient(std::string& rcpt);
+      void _pushRecipient(std::string const& rcpt);
   }; // SmtpWorker
 } // smtp

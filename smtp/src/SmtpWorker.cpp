@@ -93,10 +93,10 @@ namespace smtp
     std::string const command("RCPT TO:");
     if ((pos = this->_line.find(command)) == 0)
     {
-      this->_recipients.push_back(this->_line.substr(command.size(),
+      std::string rcpt(this->_line.substr(command.size(),
 	    this->_line.rfind(this->_eol)));
-      this->_socket << "250 2.1.0 Ok "
-       << this->_recipients.back() << this->_eol;
+      this->_epureRecipient(rcpt);
+      this->_pushRecipient(rcpt);
     }
     else if ((pos = this->_line.find("DATA")) == 0)
     {
@@ -168,6 +168,35 @@ namespace smtp
       {
 	this->_socket << "550 unknown mail box " << *it << this->_eol;
       }
+    }
+  }
+  void SmtpWorker::_epureRecipient(std::string& rcpt)
+  {
+    while (rcpt.size() && (rcpt[0] == ' ') && (rcpt[0] == '\t'))
+    {
+      rcpt.erase(0, 1);
+    }
+    while (rcpt.size() && (rcpt[rcpt.length() - 1] == ' ')
+	&& (rcpt[rcpt.length() - 1] == '\t')
+	&& (rcpt[rcpt.length() - 1] == '\n')
+	&& (rcpt[rcpt.length() - 1] == '\r'))
+    {
+      rcpt.erase(rcpt[rcpt.length() - 1]);
+    }
+  }
+
+  void SmtpWorker::_pushRecipient(std::string const& rcpt)
+  {
+    std::string domain = rcpt.substr(rcpt.find_first_of('@') + 1);
+    if (domain == "lucian-b.mendoza.epitech.eu")
+    {
+      this->_recipients.push_back(rcpt);
+      this->_socket << "250 2.1.0 Ok "
+	<< this->_recipients.back() << this->_eol;
+    }
+    else
+    {
+      this->_socket << "551 recipient not local" << this->_eol;
     }
   }
 } // smtp
