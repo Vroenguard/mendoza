@@ -46,6 +46,12 @@ namespace smtp
 	<< "250 lucian_b.mendoza.epitech.eu. ESMTP Mendoza"
 	<< this->_eol;
     }
+    else if ((this->_line.find("quit") == 0)
+	|| (this->_line.find("QUIT") == 0))
+    {
+      this->_socket << "221 2.0.0 Bye" << this->_eol;
+      this->_socket.close();
+    }
     else
     {
       this->_socket << "500 lucian_b.mendoza.epitech.eu. ESMTP Mendoza"
