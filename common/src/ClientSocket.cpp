@@ -28,6 +28,7 @@ namespace net
       ::close(this->_id);
       this->_line = "";
       this->_lineReady = false;
+      this->_id = -1;
     }
   }
 
