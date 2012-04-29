@@ -13,6 +13,7 @@
 
 #include "IWorker.hh"
 #include "ClientSocket.hh"
+#include "MailBox.hh"
 
 namespace threads = lblib::threads;
 
@@ -30,15 +31,20 @@ namespace pop3
       net::ClientSocket			_socket;
       std::string			_line;
       char const*			_eol;
+      mail::MailBox*			_mailBox;
 
     public:
       Pop3Worker(threads::SafeQueue<int>& queue,
 	  threads::ConditionVariable<>& condVar);
+      virtual ~Pop3Worker(void);
 
     protected:
       virtual void run(void);
 
       Pop3Worker(Pop3Worker const&);
       Pop3Worker const& operator = (Pop3Worker const&);
+
+    private:
+      void _readIds(void);
   }; // Pop3Worker
 } // pop3

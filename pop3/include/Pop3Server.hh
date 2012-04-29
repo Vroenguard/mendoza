@@ -15,7 +15,7 @@ namespace pop3
   {
     public:
       using net::ATcpServer::Port;
-      Pop3Server(Port port = 10025, int maxConnections = 42);
+      Pop3Server(Port port = 10110, int maxConnections = 42);
       virtual ~Pop3Server(void);
 
     protected:
