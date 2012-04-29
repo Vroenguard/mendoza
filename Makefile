@@ -14,8 +14,9 @@ RM		=	rm -f
 
 COMMON_TARGET	=	common/libmendoza_common.a
 SMTP_TARGET	=	smtp/smtp_server
+CREATOR_TARGET	=	mailbox_creator/mailbox_create
 
-all		:	common smtp
+all		:	common smtp tools
 
 common		:
 		$(MAKE) common/
@@ -25,14 +26,19 @@ smtp		:
 		$(MAKE) smtp/
 		$(CP) $(SMTP_TARGET) ./
 
+tools		:
+		$(MAKE) mailbox_creator/
+		$(CP) $(CREATOR_TARGET) ./
+
 clean		:
 		$(MAKE) common/ clean
 		$(MAKE) smtp/ clean
+		$(MAKE) mailbox_creator/ clean
 
 fclean		:
 		$(MAKE) common/ fclean
 		$(MAKE) smtp/ fclean
-		$(RM) $(COMMON_TARGET) $(SMTP_TARGET)
+		$(MAKE) mailbox_creator/ fclean
 
 re		:
 		$(MAKE) common/ re
