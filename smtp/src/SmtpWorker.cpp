@@ -5,6 +5,7 @@
 //==============================================================================
 
 #include "SmtpWorker.hh"
+#include "MailBox.hh"
 
 namespace smtp
 {
@@ -22,7 +23,12 @@ namespace smtp
     while (42)
     {
       this->_condVar.wait();
+#ifdef DEBUG
+      std::cout << "[DEBUG] Worker thread: new client!! So excited!\n";
+#endif // DEBUG
       this->_socket.setId(this->_queue.pop());
+      this->_socket << "220 lucian_b.mendoza.epitech.eu. ESMTP mendoza"
+	<< this->_eol;
       this->_nextAction = &SmtpWorker::_readHelo;
       while (this->_socket)
       {
@@ -136,5 +142,11 @@ namespace smtp
 
   void SmtpWorker::_saveMail(void)
   {
+    RecipientList::const_iterator it;
+    for (it = this->_recipients.begin(); it != this->_recipients.end(); ++it)
+    {
+      mail::MailBox mailBox(it->substr(0, it->find_first_of('@')));
+      mailBox.pushMail(this->_mailData);
+    }
   }
 } // smtp
