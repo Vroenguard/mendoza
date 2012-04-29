@@ -172,16 +172,24 @@ namespace smtp
   }
   void SmtpWorker::_epureRecipient(std::string& rcpt)
   {
-    while (rcpt.size() && (rcpt[0] == ' ') && (rcpt[0] == '\t'))
+    while (rcpt.size() && ((rcpt[0] == ' ') || (rcpt[0] == '\t')
+	|| (rcpt[0] == '<')))
     {
       rcpt.erase(0, 1);
+#ifdef DEBUG
+      std::cout << "Epuring RCPT: " << rcpt << '\n';
+#endif
     }
-    while (rcpt.size() && (rcpt[rcpt.length() - 1] == ' ')
-	&& (rcpt[rcpt.length() - 1] == '\t')
-	&& (rcpt[rcpt.length() - 1] == '\n')
-	&& (rcpt[rcpt.length() - 1] == '\r'))
+    while (rcpt.size() && ((rcpt[rcpt.length() - 1] == ' ')
+	|| (rcpt[rcpt.length() - 1] == '\t')
+	|| (rcpt[rcpt.length() - 1] == '\n')
+	|| (rcpt[rcpt.length() - 1] == '\r')
+	|| (rcpt[rcpt.length() - 1] == '>')))
     {
-      rcpt.erase(rcpt[rcpt.length() - 1]);
+      rcpt.erase(rcpt.length() - 1, 1);
+#ifdef DEBUG
+      std::cout << "Epuring RCPT: " << rcpt << '\n';
+#endif
     }
   }
 
