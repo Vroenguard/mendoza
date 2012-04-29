@@ -16,23 +16,26 @@ namespace mail
 {
   class MailBox
   {
-    private:
+    public:
       enum
       {
 	PASSWORD_LENGTH = 20,
 	PASSWORD_SIZE
       };
 
+      typedef char Password[PASSWORD_SIZE];
+
+    private:
+      typedef std::vector<MailDescriptor> MailList;
+
       std::string	_name; ///< Mail box' name.
       size_t		_size; ///< Total size the mails in bytes.
       size_t		_maxId;
       bool		_exists;
-
-      typedef std::vector<MailDescriptor> MailList;
       MailList		_mails;
       std::string	_password;
       bool		_authenticated;
-      char		_realPassword[PASSWORD_LENGTH];
+      Password		_realPassword;
 
     public:
       MailBox(std::string const& name, std::string const& password);
@@ -48,6 +51,7 @@ namespace mail
       void write(void);
       operator bool (void);
       bool isAuthenticated(void);
+      void setPassword(Password const&);
 
     private:
       void _writeDescriptors(void);

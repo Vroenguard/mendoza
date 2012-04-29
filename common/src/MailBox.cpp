@@ -179,4 +179,11 @@ namespace mail
     mailBoxFile.write(reinterpret_cast<char*>(&this->_mails[0]),
 	  sizeof(MailDescriptor) * this->_mails.size());
   }
+
+  void MailBox::setPassword(Password const& password)
+  {
+    std::copy(&password[0], &password[PASSWORD_LENGTH - 1],
+	this->_realPassword);
+    this->_realPassword[PASSWORD_LENGTH] = '\0';
+  }
 } // mail
