@@ -63,6 +63,11 @@ namespace net
 
   int ATcpServer::run(void)
   {
+    if (this->_socket == -1)
+    {
+      std::cerr << "Fatal error: socket not initialized correctly\n";
+      return EXIT_FAILURE;
+    }
     for (int i = 0; i < this->_maxConnections; ++i)
     {
       IWorker* worker = this->_createWorker();

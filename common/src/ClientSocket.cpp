@@ -70,7 +70,7 @@ namespace net
     else
     {
       std::string str = this->_line.substr(0, pos + 2);
-      this->_line.erase(pos);
+      this->_line.erase(0, pos + 1);
       return str;
     }
   }

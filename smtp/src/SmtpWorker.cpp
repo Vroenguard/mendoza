@@ -43,8 +43,8 @@ namespace smtp
     if (this->_line.find("HELO ") == 0)
     {
       this->_socket
-	<< std::string("250 lucian_b.mendoza.epitech.eu. ESMTP Mendoza")
-	<< std::string("this->_eol");
+	<< "250 lucian_b.mendoza.epitech.eu. ESMTP Mendoza"
+	<< this->_eol;
     }
     else
     {
