@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <list>
+
 #include "LblibSafeQueue.hpp"
 #include "LblibConditionVariable.hpp"
 
@@ -20,6 +22,7 @@ namespace smtp
   {
     private:
       typedef void (SmtpWorker::*Action)(void);
+      typedef std::list<std::string> RecipientList;
 
       threads::SafeQueue<int>&		_queue;
       threads::ConditionVariable<>&	_condVar;
@@ -27,6 +30,7 @@ namespace smtp
       net::ClientSocket			_socket;
       std::string			_line;
       char const*			_eol;
+      RecipientList			_recipients;
 
     public:
       SmtpWorker(threads::SafeQueue<int>& queue,
@@ -40,5 +44,7 @@ namespace smtp
 
     private:
       void _readHelo(void);
+      void _readCommand(void);
+      void _readMailRecipient(void);
   }; // SmtpWorker
 } // smtp

@@ -45,6 +45,7 @@ namespace smtp
       this->_socket
 	<< "250 lucian_b.mendoza.epitech.eu. ESMTP Mendoza"
 	<< this->_eol;
+      this->_nextAction = &SmtpWorker::_readCommand;
     }
     else if ((this->_line.find("quit") == 0)
 	|| (this->_line.find("QUIT") == 0))
@@ -54,8 +55,49 @@ namespace smtp
     }
     else
     {
-      this->_socket << "500 lucian_b.mendoza.epitech.eu. ESMTP Mendoza"
-	<< this->_eol;
+      this->_socket << "500 Unknown command" << this->_eol;
+    }
+  }
+
+  void SmtpWorker::_readCommand(void)
+  {
+    size_t pos;
+    if ((pos = this->_line.find("MAIL FROM: ")) == 0)
+    {
+      this->_nextAction = &SmtpWorker::_readMailRecipient;
+      this->_socket << "250 2.1.0 Ok" << this->_eol;
+    }
+    else if ((this->_line.find("quit") == 0)
+	|| (this->_line.find("QUIT") == 0))
+    {
+      this->_socket << "221 2.0.0 Bye" << this->_eol;
+      this->_socket.close();
+    }
+    else
+    {
+      this->_socket << "500 Unknown command" << this->_eol;
+    }
+  }
+
+  void SmtpWorker::_readMailRecipient(void)
+  {
+    size_t pos;
+    std::string const command("RECPT TO: ");
+    if ((pos = this->_line.find(command)) == 0)
+    {
+      this->_recipients.push_back(this->_line.substr(command.size(),
+	    this->_line.rfind(this->_eol)));
+      this->_socket << "250 2.1.0 Ok "
+       << this->_recipients.back() << this->_eol;
+    }
+    else if ((pos = this->_line.find("DATA")) == 0)
+    {
+      this->_nextAction = &SmtpWorker::_readCommand;
+      this->_socket << "250 2.1.0 Ok" << this->_eol;
+    }
+    else
+    {
+      this->_socket << "500 Unknown command" << this->_eol;
     }
   }
 } // smtp
