@@ -159,7 +159,7 @@ namespace smtp
     RecipientList::const_iterator it;
     for (it = this->_recipients.begin(); it != this->_recipients.end(); ++it)
     {
-      mail::MailBox mailBox(it->substr(0, it->find_first_of('@')));
+      mail::MailBox mailBox(it->substr(0, it->find_first_of('@')), "");
       if (mailBox)
       {
 	mailBox.pushMail(this->_mailData);
