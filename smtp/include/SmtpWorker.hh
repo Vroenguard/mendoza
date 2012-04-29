@@ -31,6 +31,8 @@ namespace smtp
       std::string			_line;
       char const*			_eol;
       RecipientList			_recipients;
+      int				_mailDataState;
+      std::string			_mailData;
 
     public:
       SmtpWorker(threads::SafeQueue<int>& queue,
@@ -46,5 +48,8 @@ namespace smtp
       void _readHelo(void);
       void _readCommand(void);
       void _readMailRecipient(void);
+      void _readMailData(void);
+      void _mailDataEndStage1(void);
+      void _saveMail(void);
   }; // SmtpWorker
 } // smtp

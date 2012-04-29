@@ -92,12 +92,49 @@ namespace smtp
     }
     else if ((pos = this->_line.find("DATA")) == 0)
     {
-      this->_nextAction = &SmtpWorker::_readCommand;
+      this->_nextAction = &SmtpWorker::_readMailData;
+      this->_mailDataState = 0;
+      this->_mailData = "";
       this->_socket << "250 2.1.0 Ok" << this->_eol;
     }
     else
     {
       this->_socket << "500 Unknown command" << this->_eol;
     }
+  }
+
+  void SmtpWorker::_mailDataEndStage1(void)
+  {
+    if (this->_mailDataState == 0)
+    {
+      this->_mailDataState += 1;
+    }
+    else
+    {
+      this->_mailDataState = 0;
+      this->_mailData += this->_line;
+    }
+  }
+
+  void SmtpWorker::_readMailData(void)
+  {
+    if (this->_line == this->_eol)
+    {
+      this->_mailDataEndStage1();
+    }
+    else if ((this->_line == ".\r\n") && (this->_mailDataState == 1))
+    {
+      this->_saveMail();
+      this->_socket << "250 2.1.0 Ok" << this->_eol;
+      this->_nextAction = &SmtpWorker::_readCommand;
+    }
+    else
+    {
+      this->_mailData += this->_line;
+    }
+  }
+
+  void SmtpWorker::_saveMail(void)
+  {
   }
 } // smtp
