@@ -63,6 +63,12 @@ namespace net
 
   int ATcpServer::run(void)
   {
+    for (int i = 0; i < this->_maxConnections; ++i)
+    {
+      IWorker* worker = this->_createWorker();
+      this->_workers.push_back(worker);
+      worker->launch();
+    }
     int clientSocket;
     sockaddr_in sockAddr;
     socklen_t sockAddrLen;

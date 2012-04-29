@@ -16,6 +16,9 @@ namespace smtp
 
   void SmtpWorker::run(void)
   {
+#ifdef DEBUG
+    std::cout << "[DEBUG] Worker thread: starting running.\n";
+#endif // DEBUG
     while (42)
     {
       this->_condVar.wait();
@@ -24,6 +27,9 @@ namespace smtp
       while (this->_socket)
       {
 	this->_line = this->_socket.getLine();
+#ifdef DEBUG
+	std::cout << "[DEBUG] Worker thread: line: " << this->_line << '\n';
+#endif // DEBUG
 	if (this->_nextAction)
 	{
 	  (this->*_nextAction)();
