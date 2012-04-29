@@ -23,8 +23,8 @@ namespace net
 
       int		_id;
       bool		_lineReady;
-      std::stringstream	_stream;
       char		_buffer[RECV_MAX_SIZE];
+      std::string	_line;
 
     public:
       ClientSocket(int id = -1);

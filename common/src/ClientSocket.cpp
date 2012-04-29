@@ -5,6 +5,8 @@
 //==============================================================================
 
 #include <unistd.h>
+#include <cstring>
+
 #include "ClientSocket.hh"
 
 namespace net
@@ -24,7 +26,7 @@ namespace net
     if (this->_id != -1)
     {
       ::close(this->_id);
-      this->_stream.str("");
+      this->_line = "";
       this->_lineReady = false;
     }
   }
@@ -47,18 +49,29 @@ namespace net
   std::string ClientSocket::getLine(void)
   {
     ssize_t readBytes;
-    while (this->_stream.str().find("\r\n") == std::string::npos)
+    size_t pos;
+    while ((pos = this->_line.find("\r\n")) == std::string::npos)
     {
-      readBytes = recv(this->_id, this->_buffer, RECV_MAX_SIZE, 0);
+      memset(this->_buffer, 0, sizeof(this->_buffer));
+      readBytes = recv(this->_id, this->_buffer, sizeof(this->_buffer) - 1, 0);
       if ((readBytes == 0) || (readBytes == -1))
       {
 	this->close();
 	break;
       }
-      this->_stream.write(this->_buffer, readBytes);
+      this->_line += this->_buffer;
     }
-    std::string str;
-    std::getline(this->_stream, str);
-    return str;
+    if (pos == std::string::npos)
+    {
+      std::string str = this->_line;
+      this->_line = "";
+      return str;
+    }
+    else
+    {
+      std::string str = this->_line.substr(0, pos + 2);
+      this->_line.erase(pos);
+      return str;
+    }
   }
 } // net
